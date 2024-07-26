@@ -1,0 +1,66 @@
+// src/pages/HomePage.tsx
+
+import React, { useState } from "react";
+import { Container, TextField, Button, Box } from "@mui/material";
+import Navbar from "../components/Navbar";
+import ProductList from "../components/ProductList";
+import { useFetchProducts } from "../hooks/useFetchProducts";
+
+const HomePage: React.FC = () => {
+  const [company, setCompany] = useState<string>("AMZ");
+  const [category, setCategory] = useState<string>("Laptop");
+  const [maxPrice, setMaxPrice] = useState<number>(10000);
+  const [topN, setTopN] = useState<number>(10);
+
+  const { products, loading, error } = useFetchProducts(company, category, maxPrice, topN);
+
+  const handleSearch = () => {
+    // Trigger a new fetch with updated state
+  };
+
+  return (
+    <Box>
+      <Navbar />
+      <Container style={{ marginTop: "2em" }}>
+        <Box display="flex" justifyContent="center" marginBottom="2em">
+          <TextField
+            label="Company"
+            variant="outlined"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            style={{ marginRight: "1em" }}
+          />
+          <TextField
+            label="Category"
+            variant="outlined"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            style={{ marginRight: "1em" }}
+          />
+          <TextField
+            label="Max Price"
+            type="number"
+            variant="outlined"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            style={{ marginRight: "1em" }}
+          />
+          <TextField
+            label="Top N"
+            type="number"
+            variant="outlined"
+            value={topN}
+            onChange={(e) => setTopN(Number(e.target.value))}
+            style={{ marginRight: "1em" }}
+          />
+          <Button variant="contained" onClick={handleSearch}>
+            Search
+          </Button>
+        </Box>
+        <ProductList products={products} loading={loading} error={error} />
+      </Container>
+    </Box>
+  );
+};
+
+export default HomePage;

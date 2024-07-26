@@ -1,0 +1,42 @@
+CREATE PRODUCT CARD COMPONENT
+
+// src/components/ProductCard.tsx
+
+import React from "react";
+import { Card, CardContent, Typography, Badge, Box } from "@mui/material";
+
+interface ProductCardProps {
+  productName: string;
+  price: number;
+  rating: number;
+  discount: number;
+  availability: string;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ productName, price, rating, discount, availability }) => {
+  return (
+    <Card style={{ margin: "1em", position: "relative" }}>
+      <Badge
+        badgeContent={availability === "yes" ? "In Stock" : "Out of Stock"}
+        color={availability === "yes" ? "primary" : "error"}
+        style={{ position: "absolute", top: 8, right: 8 }}
+      />
+      <CardContent>
+        <Typography variant="h5" component="div">
+          {productName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Price: ${price}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Rating: {rating} / 5
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Discount: {discount}%
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ProductCard;

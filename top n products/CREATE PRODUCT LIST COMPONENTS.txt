@@ -1,0 +1,43 @@
+CREATE PRODUCT LIST COMPONENTS
+
+// src/components/ProductList.tsx
+
+import React from "react";
+import { Grid, CircularProgress, Alert } from "@mui/material";
+import ProductCard from "./ProductCard";
+
+interface Product {
+  productName: string;
+  price: number;
+  rating: number;
+  discount: number;
+  availability: string;
+}
+
+interface ProductListProps {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products, loading, error }) => {
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
+
+  return (
+    <Grid container spacing={3}>
+      {products.map((product, index) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+          <ProductCard {...product} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+export default ProductList;

@@ -1,0 +1,47 @@
+CREATE CONSTANTS:
+
+export const API_BASE_URL = "http://20.244.56.144/test";
+
+SETUP API FETCHING WITH AXIOS
+
+// src/hooks/useFetchProducts.ts
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../utils/constants";
+
+interface Product {
+  productName: string;
+  price: number;
+  rating: number;
+  discount: number;
+  availability: string;
+}
+
+export const useFetchProducts = (company: string, category: string, maxPrice: number, topN: number) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(
+          ${API_BASE_URL}/companies/${company}/categories/${category}/products/top-${topN}?minPrice=1&maxPrice=${maxPrice}
+        );
+        setProducts(response.data);
+      } catch (error) {
+        setError("Failed to fetch products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [company, category, maxPrice, topN]);
+
+  return { products, loading, error };
+};
